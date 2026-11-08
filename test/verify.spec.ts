@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { ResponseCache } from '../src/cache.ts'
-import { CiteNetworkError } from '../src/http.ts'
+import { CiteNetworkError, type HttpClient } from '../src/http.ts'
 import { CiteInputError, verifyCitation, type CitationInput, type VerifyDeps } from '../src/verify.ts'
 import { fixture, scriptedClient, type Route } from './helpers.ts'
 
@@ -87,6 +87,7 @@ describe('verifyCitation', () => {
   it('reports not_found as skipped and leaves the evidence unchecked', async () => {
     const outcome = await verifyCitation({ doi: '10.1000/missing' }, await deps(await crossrefRoutes()))
     expect(outcome.notFound).toBe(true)
+    expect(outcome.lookupError).toBe(false)
     expect(outcome.status).toBe('unchecked')
     const check = outcome.checks.find(item => item.check === 'doi-exists')
     expect(check?.status).toBe('skipped')
@@ -98,8 +99,24 @@ describe('verifyCitation', () => {
   it('reports a timeout as skipped, never as a verdict', async () => {
     const outcome = await verifyCitation({ doi: '10.1000/xyz' }, await deps([], { fail: new CiteNetworkError('timeout', 'timed out') }))
     expect(outcome.status).toBe('unchecked')
+    expect(outcome.notFound).toBe(false)
+    expect(outcome.lookupError).toBe(true)
     expect(outcome.checks[0]?.status).toBe('skipped')
     expect(outcome.checks[0]?.code).toBe('unavailable')
+  })
+
+  it('does not report not_found when another identifier failed to look up', async () => {
+    const base = await deps([])
+    const client: HttpClient = {
+      async get(url: string) {
+        if (url.includes('crossref.org')) return { status: 404, body: '', url, contentType: 'text/plain' }
+        throw new CiteNetworkError('timeout', 'timed out')
+      },
+    }
+    const outcome = await verifyCitation({ doi: '10.1000/missing', pmid: '12345' }, { ...base, client })
+    expect(outcome.notFound).toBe(false)
+    expect(outcome.lookupError).toBe(true)
+    expect(outcome.status).toBe('unchecked')
   })
 
   it('resolves a PMID through PubMed and keeps the DOI it carries', async () => {

@@ -13,6 +13,7 @@ export interface CiteVerifyValue {
   readonly ok: true
   readonly status: CiteVerifyResult['status']
   readonly notFound: boolean
+  readonly lookupError: boolean
   readonly resolved?: CiteVerifyResult['resolved']
   readonly checks: readonly CheckResult[]
   readonly evidenceId?: string
@@ -33,6 +34,7 @@ const OUTPUT_SCHEMA = {
     ok: { type: 'boolean', required: true },
     status: { type: 'string' },
     notFound: { type: 'boolean' },
+    lookupError: { type: 'boolean' },
     resolved: RESOLVED_SCHEMA,
     checks: { type: 'array', items: CHECK_SCHEMA },
     evidenceId: { type: 'string' },
@@ -88,7 +90,13 @@ export function makeCiteVerifyTool(runtime: CiteVerifyRuntime) {
       render: (_args, value) => {
         const result = value as CiteVerifyValue | CiteVerifyFailure
         if (!result.ok) return [{ type: 'text', text: `cite_verify failed (${result.error.code}): ${result.error.message}` }]
-        const lines = [`cite_verify: ${result.status}${result.notFound ? ' (no record found)' : ''}`]
+        const suffix = result.notFound
+          ? ' (no record found by the provider)'
+          : result.lookupError
+            ? ' (lookup failed — not a not-found verdict)'
+            : ''
+        const lines = [`cite_verify: ${result.status}${suffix}`]
+        if (result.lookupError) lines.push('  note: at least one lookup failed; the answer may be partial and is not a verdict about the work')
         if (result.resolved !== undefined) {
           const resolved = result.resolved
           lines.push(
@@ -111,6 +119,7 @@ export function makeCiteVerifyTool(runtime: CiteVerifyRuntime) {
           ok: true as const,
           status: result.status,
           notFound: result.notFound,
+          lookupError: result.lookupError,
           ...(result.resolved === undefined
             ? {}
             : { resolved: { ...result.resolved, authors: [...result.resolved.authors] } }),

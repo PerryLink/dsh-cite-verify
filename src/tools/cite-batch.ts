@@ -28,6 +28,8 @@ const OUTPUT_SCHEMA = {
           input: { type: 'string', required: true },
           ok: { type: 'boolean', required: true },
           status: { type: 'string' },
+          lookupError: { type: 'boolean' },
+          duplicate: { type: 'boolean' },
           evidenceId: { type: 'string' },
           error: ERROR_SCHEMA,
         },
@@ -70,7 +72,8 @@ export function makeCiteBatchTool(runtime: CiteVerifyRuntime) {
           else counts.set(item.status ?? 'unchecked', (counts.get(item.status ?? 'unchecked') ?? 0) + 1)
         }
         const summary = [...counts.entries()].map(([key, count]) => `${key}=${count}`).join(', ')
-        return [{ type: 'text', text: `cite_batch: ${result.count} citation(s) — ${summary}` }]
+        const duplicates = (result.items as CiteBatchResult['items']).filter(item => item.duplicate === true).length
+        return [{ type: 'text', text: `cite_batch: ${result.count} citation(s) — ${summary}${duplicates === 0 ? '' : `; ${duplicates} duplicate(s) marked`}` }]
       },
     },
     async execute(args: unknown) {
@@ -85,6 +88,8 @@ export function makeCiteBatchTool(runtime: CiteVerifyRuntime) {
             input: item.input,
             ok: item.ok,
             ...(item.status === undefined ? {} : { status: item.status }),
+            ...(item.lookupError === true ? { lookupError: true } : {}),
+            ...(item.duplicate === true ? { duplicate: true } : {}),
             ...(item.evidenceId === undefined ? {} : { evidenceId: item.evidenceId }),
             ...(item.error === undefined ? {} : { error: { code: item.error.code, message: item.error.message } }),
           })),

@@ -8,6 +8,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- `notFound` is now true only for a definitive provider 404 with no failed
+  lookup; network/timeout/5xx/parse failures set a new `lookupError` flag and
+  the tool render says "lookup failed" instead of "no record found".
+- Batch duplicates are marked with `duplicate: true` and no longer downgrade a
+  metadata `fail` to `warn`; non-failing duplicates are raised to `warn`.
 - Re-verifying the same provider answer no longer fails with `STORE_ERROR`:
   evidence identity is the immutable snapshot plus the checks, and its
   timestamps come from the snapshot, so an unchanged answer dedupes while a
@@ -38,7 +43,7 @@ First release: citation existence and metadata verification.
   429/503, SSRF-resistant hop checks.
 - Response cache with TTL and a `fresh` bypass.
 - `not_found` is always a `skipped` check and leaves the evidence `unchecked`.
-- 53 tests across HTTP bounds, BibTeX, comparison, verification, runtime and
+- 56 tests across HTTP bounds, BibTeX, comparison, verification, runtime and
   tool surface; every provider interaction is scripted (CI is offline).
 
 ### Known limitations

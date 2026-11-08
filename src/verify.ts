@@ -108,8 +108,10 @@ export interface VerificationOutcome {
   readonly resolved?: ResolvedSummary
   readonly snapshot?: VerificationSnapshot
   readonly warnings: readonly string[]
-  /** True when no provider returned a record. */
+  /** True only when no provider returned a record, at least one returned 404, and no lookup failed. */
   readonly notFound: boolean
+  /** True when a lookup failed (network, timeout, 5xx or unparsable answer). */
+  readonly lookupError: boolean
   /** The normalized citation (identifiers + expected fields). */
   readonly normalized: NormalizedCitation
 }
@@ -357,16 +359,20 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
 
   let primary: CitationRecord | undefined
   let snapshot: VerificationSnapshot | undefined
+  let sawNotFound = false
+  let lookupError = false
   const records: CitationRecord[] = []
   for (const lookup of lookups) {
     let outcome: ProviderOutcome
     try {
       outcome = await fetchOutcome({ ...lookup, url: '' }, deps)
     } catch (error) {
+      lookupError = true
       checks.push(failureCheck(subject, lookup.kind, error))
       continue
     }
     if (outcome.kind === 'not_found') {
+      sawNotFound = true
       checks.push(
         check(
           subject,
@@ -396,7 +402,16 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
   }
 
   if (primary === undefined) {
-    return { checks, status: 'unchecked', warnings, notFound: true, normalized: citation }
+    // A transport/parse failure is not a "no such work" answer: keep the two
+    // outcomes apart in the value, not just in the check details.
+    return {
+      checks,
+      status: 'unchecked',
+      warnings,
+      notFound: sawNotFound && !lookupError,
+      lookupError,
+      normalized: citation,
+    }
   }
 
   const resolved = summaryOf(primary)
@@ -500,6 +515,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
     ...(snapshot === undefined ? {} : { snapshot }),
     warnings,
     notFound: false,
+    lookupError,
     normalized: citation,
   }
 }

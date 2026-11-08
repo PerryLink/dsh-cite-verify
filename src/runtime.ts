@@ -73,6 +73,7 @@ export interface CiteVerifyResult {
   readonly ok: true
   readonly status: VerificationOutcome['status']
   readonly notFound: boolean
+  readonly lookupError: boolean
   readonly resolved?: ResolvedSummary
   readonly checks: readonly CheckResult[]
   readonly evidenceId?: string
@@ -86,6 +87,10 @@ export interface CiteBatchItem {
   readonly input: string
   readonly ok: boolean
   readonly status?: VerificationOutcome['status']
+  /** True when a lookup failed rather than returning a definitive answer. */
+  readonly lookupError?: boolean
+  /** True when this token repeats an earlier citation in the same batch. */
+  readonly duplicate?: boolean
   readonly evidenceId?: string
   readonly error?: { readonly code: string; readonly message: string }
 }
@@ -321,6 +326,7 @@ export class CiteVerifyRuntime {
       ok: true as const,
       status: outcome.status,
       notFound: outcome.notFound,
+      lookupError: outcome.lookupError,
       checks: outcome.checks,
       warnings: outcome.warnings,
       ...(outcome.resolved === undefined ? {} : { resolved: outcome.resolved }),
@@ -382,6 +388,7 @@ export class CiteVerifyRuntime {
             input: citations[index]!,
             ok: true,
             status: result.status,
+            ...(result.lookupError ? { lookupError: true } : {}),
             ...(result.evidenceId === undefined ? {} : { evidenceId: result.evidenceId }),
           }
           items[index] = item
@@ -403,7 +410,13 @@ export class CiteVerifyRuntime {
         continue
       }
       const item = items[index]!
-      if (item.ok) items[index] = { ...item, status: 'warn' }
+      if (item.ok) {
+        // A duplicate is marked explicitly. Never lower the most severe status:
+        // a metadata `fail` stays `fail`; everything else is raised to `warn`.
+        items[index] = { ...item, duplicate: true, status: item.status === 'fail' ? 'fail' : 'warn' }
+      } else {
+        items[index] = { ...item, duplicate: true }
+      }
     }
     const warnings: string[] = []
     const duplicates = parsed.length - seen.size

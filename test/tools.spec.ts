@@ -8,6 +8,7 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { resolveConfig } from '../src/config.ts'
+import { CiteNetworkError } from '../src/http.ts'
 import { CiteVerifyRuntime } from '../src/runtime.ts'
 import { makeCiteBatchTool } from '../src/tools/cite-batch.ts'
 import type { CiteBatchValue } from '../src/tools/cite-batch.ts'
@@ -84,6 +85,33 @@ describe('tool interfaces', () => {
     const blocks = tool.output.render({}, value as never) as Array<{ text: string }>
     expect(blocks[0]?.text).toContain('ok=1')
     expect(blocks[0]?.text).toContain('unchecked=1')
+  })
+
+  it('separates a definitive not-found from a failed lookup in value and render', async () => {
+    const missingTool = makeCiteVerifyTool(await runtime())
+    const missing = (await missingTool.execute({ doi: '10.1000/missing' }, EXEC)) as CiteVerifyValue | CiteVerifyFailure
+    expect(missing.ok).toBe(true)
+    if (!missing.ok) throw new Error('expected success')
+    expect(missing.notFound).toBe(true)
+    expect(missing.lookupError).toBe(false)
+    const missingText = (missingTool.output.render({}, missing as never) as Array<{ text: string }>)[0]?.text ?? ''
+    expect(missingText).toContain('no record found')
+    expect(missingText).not.toContain('lookup failed')
+
+    const failing = new CiteVerifyRuntime({
+      config: resolveConfig({ root }),
+      client: scriptedClient([], { fail: new CiteNetworkError('timeout', 'timed out') }).client,
+      now: () => AT,
+    })
+    const failingTool = makeCiteVerifyTool(failing)
+    const value = (await failingTool.execute({ doi: '10.1000/xyz' }, EXEC)) as CiteVerifyValue | CiteVerifyFailure
+    expect(value.ok).toBe(true)
+    if (!value.ok) throw new Error('expected success')
+    expect(value.notFound).toBe(false)
+    expect(value.lookupError).toBe(true)
+    const text = (failingTool.output.render({}, value as never) as Array<{ text: string }>)[0]?.text ?? ''
+    expect(text).toContain('lookup failed')
+    expect(text).not.toContain('no record found')
   })
 
   it('cite_fix returns text only', async () => {

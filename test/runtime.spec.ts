@@ -7,7 +7,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { validateRep } from '@perrylink/dsh-research-core'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { resolveConfig } from '../src/config.ts'
 import { CiteVerifyRuntime } from '../src/runtime.ts'
 import type { HttpClient } from '../src/http.ts'
@@ -112,7 +112,25 @@ describe('batch', () => {
     const { rt } = await runtime()
     const result = await rt.batch(['doi:10.1000/xyz', '10.1000/xyz'])
     expect(result.items[1]?.status).toBe('warn')
+    expect(result.items[1]?.duplicate).toBe(true)
+    expect(result.items[0]?.duplicate).toBeUndefined()
     expect(result.warnings.join(' ')).toContain('duplicate')
+  })
+
+  it('never downgrades a duplicate fail to warn', async () => {
+    const { rt } = await runtime()
+    vi.spyOn(rt, 'verify').mockResolvedValue({
+      ok: true,
+      status: 'fail',
+      notFound: false,
+      lookupError: false,
+      checks: [],
+      warnings: [],
+    })
+    const result = await rt.batch(['doi:10.1000/xyz', '10.1000/xyz'])
+    expect(result.items[0]?.status).toBe('fail')
+    expect(result.items[1]?.status).toBe('fail')
+    expect(result.items[1]?.duplicate).toBe(true)
   })
 
   it('enforces the batch cap', async () => {

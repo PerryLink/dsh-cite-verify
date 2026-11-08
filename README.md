@@ -54,13 +54,17 @@ When `ctx.researchEvidence` is mounted the evidence goes there; otherwise the pl
 | `title`, `authors`, `year`, `venue`, `pages` | | fields as cited, compared against the record |
 | `fresh` | boolean | bypass the response cache |
 
-Returns `{ ok, status, notFound, resolved, checks[], evidenceId, recordPath?, warnings[] }`.
+Returns `{ ok, status, notFound, lookupError, resolved, checks[], evidenceId, recordPath?, warnings[] }`.
+
+`notFound` is true **only** when no provider returned a record, at least one definitively returned 404, and no lookup failed. `lookupError` is true when a network failure, timeout, 5xx or unparsable response prevented a check — that answer is `unchecked` and must not be read as “no record found”. If one identifier fails while another resolves, the record is still returned with `lookupError: true`.
 
 `status` is derived from the checks: any `fail` → `fail`, any `warn` → `warn`, any `pass` → `ok`, nothing checked → `unchecked`.
 
 ### `cite_batch`
 
 `{ citations: string[], fresh? }` where each item is `doi:10...`, `pmid:123`, `arxiv:2401.00001`, an `@article{...}` entry, or a bare identifier detected by shape. Bounded concurrency, per-item failures, duplicate detection.
+
+Each item carries `status`, `lookupError?`, `duplicate?` and `evidenceId?`. A repeated identifier is marked `duplicate: true`; it keeps `fail` if it already failed (a duplicate never downgrades the worst status) and is otherwise raised to `warn`. The batch `warnings[]` counts the duplicates.
 
 ### `cite_fix`
 
@@ -70,7 +74,7 @@ Same inputs as `cite_verify`. Returns `{ ok, bibtex, diffs[], status, evidenceId
 
 `INVALID_INPUT` · `INVALID_BIBTEX` · `UNSUPPORTED_IDENTIFIER` · `STORE_ERROR` · `BATCH_TOO_LARGE`
 
-Network failures never become citation failures: they appear as `skipped` checks (`network_error`, `rate_limited`, `unavailable` for timeouts) and leave the evidence `unchecked`.
+Network failures never become citation failures: they appear as `skipped` checks (`network_error`, `rate_limited`, `unavailable` for timeouts), set `lookupError: true`, and leave the evidence `unchecked` with `notFound: false`.
 
 ## Check semantics
 
@@ -161,7 +165,7 @@ Raw per-case predictions: [`bench/results-citations.json`](bench/results-citatio
 
 ### Unit and integration tests
 
-- **53 tests across 6 files**: HTTP bounds (allowlist, redirect re-validation, retries, timeout mapping), BibTeX (braced and parenthesised entries), comparison (incl. diacritics/subtitle and PubMed family+initials), verification (found / not-found / timeout / PMID / arXiv / BibTeX / update notice / two-source cross-check / cache / fresh), runtime (REP record validity, persistence, re-verification without an evidence conflict, batch locality, duplicates, fix diffs), tool surface, package contract.
+- **56 tests across 6 files**: HTTP bounds (allowlist, redirect re-validation, retries, timeout mapping), BibTeX (braced and parenthesised entries), comparison (incl. diacritics/subtitle and PubMed family+initials), verification (found / not-found / timeout / PMID / arXiv / BibTeX / update notice / two-source cross-check / cache / fresh, and `notFound` vs `lookupError`, incl. a mixed 404 + timeout), runtime (REP record validity, persistence, re-verification without an evidence conflict, batch locality, duplicates incl. fail-preserving status, fix diffs), tool surface (including the not-found vs failed-lookup render), package contract.
 - Every provider interaction in the test suite is scripted — CI never depends on the network.
 
 ## Development
