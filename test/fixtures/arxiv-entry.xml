@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <entry>
+    <id>http://arxiv.org/abs/2401.00001v1</id>
+    <title>A study of things</title>
+    <author><name>Jane Doe</name></author>
+    <author><name>Richard Roe</name></author>
+    <published>2020-01-15T00:00:00Z</published>
+    <arxiv:doi xmlns:arxiv="http://arxiv.org/schemas/atom">10.1000/xyz</arxiv:doi>
+  </entry>
+</feed>

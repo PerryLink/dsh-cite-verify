@@ -1,0 +1,32 @@
+# dsh-cite-verify bundle patch: mount the citation verification tools.
+#
+# Every key below is a Config field (Schemastery schema); invalid values fail the
+# profile load loudly. Network access is allowed only to the metadata APIs on
+# the built-in host allowlist, with explicit time and rate bounds.
+- insert:
+    - id: dsh-cite-verify
+      name: dsh-cite-verify
+      config:
+        # Master switch. On by default; `false` mounts no tools at all.
+        enabled: true
+        # Store/cache root, resolved against the harness working directory.
+        root: .cite-verify
+        # User-Agent sent to Crossref/PubMed/arXiv (put a contact address here
+        # when you deploy this at scale).
+        userAgent: dsh-cite-verify/0.1.0 (https://github.com/PerryLink/dsh-cite-verify)
+        # Per-request deadline.
+        timeoutMs: 15000
+        # Minimum delay between two requests to the same host.
+        minIntervalMs: 150
+        # Bounded retries for 429/503 responses.
+        retries: 1
+        # Maximum redirects per request; every hop is re-validated against the
+        # allowlist, so an allowed host cannot bounce us to an internal one.
+        maxRedirects: 3
+        # Cache lifetime for provider responses (7 days).
+        cacheTtlMs: 604800000
+        # Title similarity threshold for a pass.
+        titleThreshold: 0.85
+        # Default concurrency and item cap for cite_batch.
+        batchConcurrency: 3
+        maxBatch: 50

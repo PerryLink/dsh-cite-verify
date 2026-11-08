@@ -1,0 +1,18 @@
+{
+  "header": { "type": "esummary", "version": "0.3" },
+  "result": {
+    "uids": ["12345"],
+    "12345": {
+      "uid": "12345",
+      "title": "A study of things.",
+      "authors": [{ "name": "Doe J" }, { "name": "Roe R" }],
+      "pubdate": "2020 Mar",
+      "fulljournalname": "Journal of Tests",
+      "source": "J Test",
+      "volume": "12",
+      "issue": "3",
+      "pages": "1-10",
+      "articleids": [{ "idtype": "doi", "value": "10.1000/xyz" }, { "idtype": "pubmed", "value": "12345" }]
+    }
+  }
+}

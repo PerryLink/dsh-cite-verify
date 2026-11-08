@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "message": {
+    "DOI": "10.1000/xyz",
+    "title": ["A study of things"],
+    "author": [
+      { "family": "Doe", "given": "Jane" },
+      { "family": "Roe", "given": "Richard" }
+    ],
+    "issued": { "date-parts": [[2020, 3, 1]] },
+    "container-title": ["Journal of Tests"],
+    "volume": "12",
+    "issue": "3",
+    "page": "1-10",
+    "publisher": "Test Press",
+    "type": "journal-article"
+  }
+}

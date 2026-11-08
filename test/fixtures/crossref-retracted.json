@@ -1,0 +1,14 @@
+{
+  "status": "ok",
+  "message": {
+    "DOI": "10.1000/retraction",
+    "title": ["Retraction: A study of things"],
+    "author": [{ "family": "Editor", "given": "The" }],
+    "issued": { "date-parts": [[2021]] },
+    "container-title": ["Journal of Tests"],
+    "type": "journal-article",
+    "update-to": [
+      { "type": "retraction", "DOI": "10.1000/xyz", "label": "Retraction of a study" }
+    ]
+  }
+}
