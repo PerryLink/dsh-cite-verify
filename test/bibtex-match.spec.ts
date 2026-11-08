@@ -35,6 +35,14 @@ describe('bibtex', () => {
     expect(entries[0]?.fields['year']).toBe('2001')
   })
 
+  it('parses parenthesised entries without swallowing the next entry', () => {
+    const text = '@article(doe2020, title = {A (nested) study}, year = {2020})\n@book{next, title = {B}}'
+    const entries = parseBibtex(text)
+    expect(entries.map(item => item.key)).toEqual(['doe2020', 'next'])
+    expect(entries[0]?.fields['title']).toBe('A (nested) study')
+    expect(entries[0]?.fields['year']).toBe('2020')
+  })
+
   it('round-trips through the serializer', () => {
     const parsed = parseBibtexEntry(entry)!
     const text = serializeBibtex(parsed, { fieldOrder: ['title', 'author', 'year', 'journal', 'doi'] })
@@ -47,6 +55,9 @@ describe('bibtex', () => {
     expect(authorsOf('Jane Doe and others')).toEqual(['Jane Doe'])
     expect(lastNameOf('Doe, Jane')).toBe('doe')
     expect(lastNameOf('Jane Q. Doe')).toBe('doe')
+    // PubMed's family + initials form must yield the family name too.
+    expect(lastNameOf('Doe J')).toBe('doe')
+    expect(lastNameOf('van der Waals J')).toBe('van der waals')
     expect(yearOf(parseBibtexEntry(entry)!)).toBe(2020)
   })
 })
@@ -91,6 +102,13 @@ describe('comparison', () => {
     expect(comparison.missing).toEqual([])
     expect(comparison.ratio).toBe(1)
     expect(comparison.extra).toContain('smith')
+  })
+
+  it('compares PubMed family+initials with Crossref family+given names', () => {
+    const comparison = compareAuthors(['Doe, Jane', 'Roe, Richard'], ['Doe J', 'Roe R'])
+    expect(comparison.missing).toEqual([])
+    expect(comparison.extra).toEqual([])
+    expect(comparison.ratio).toBe(1)
   })
 
   it('treats a one-year difference as near', () => {

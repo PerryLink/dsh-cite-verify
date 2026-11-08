@@ -243,18 +243,33 @@ export class CiteVerifyRuntime {
         sourceRef,
         capturedAt: this.iso(),
       })
+      // Re-verifying the same answer must dedupe, not conflict: the evidence
+      // records the immutable snapshot's capture time and the checks themselves
+      // are part of its identity, so a different expectation is different
+      // evidence instead of an EVIDENCE_CONFLICT.
+      const evidenceSourceRef = {
+        ...sourceRef,
+        retrievedAt: captured.snapshot.capturedAt,
+      }
       evidence = (
         await port.addEvidence({
-          evidenceId: stableId('ev', ['cite-verify', sourceRef.kind, sourceRef.id, captured.snapshot.snapshotId]),
+          evidenceId: stableId('ev', [
+            'cite-verify',
+            sourceRef.kind,
+            sourceRef.id,
+            captured.snapshot.snapshotId,
+            outcome.status,
+            ...outcome.checks.map(item => item.checkId),
+          ]),
           title: resolved.title ?? `${snapshot.provider} record for ${sourceRef.id}`,
-          sourceRef,
+          sourceRef: evidenceSourceRef,
           snapshotIds: [captured.snapshot.snapshotId],
           anchors: buildFieldAnchors(resolved, captured.snapshot.snapshotId),
           provenance: {
             plugin: 'dsh-cite-verify',
             version: VERSION,
             method: `lookup:${snapshot.provider}`,
-            retrievedAt: this.iso(),
+            retrievedAt: captured.snapshot.capturedAt,
           },
           checks: [...outcome.checks],
           notes: `status=${outcome.status}; ${outcome.checks.length} check(s)`,

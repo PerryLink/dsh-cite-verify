@@ -72,18 +72,28 @@ export function parseBibtex(input: string): BibEntry[] {
     const type = match[1]!.toLowerCase()
     const key = match[2]!
     const bodyStart = match.index + match[0].length
-    let depth = 1
+    // BibTeX allows either `@type{key, ...}` or `@type(key, ...)`; the closing
+    // delimiter must match the opener, and braces inside a parenthesised entry
+    // still hide their content from the outer delimiter.
+    const openChar = match[0].includes('{') ? '{' : '('
+    let braceDepth = openChar === '{' ? 1 : 0
+    let parenDepth = openChar === '(' ? 1 : 0
     let index = bodyStart
     let inQuotes = false
     for (; index < input.length; index += 1) {
       const char = input[index]!
       if (char === '"' && input[index - 1] !== '\\') inQuotes = !inQuotes
       if (inQuotes) continue
-      if (char === '{') depth += 1
-      else if (char === '}') {
-        depth -= 1
-        if (depth === 0) break
+      if (char === '{') braceDepth += 1
+      else if (char === '}' && braceDepth > 0) braceDepth -= 1
+      else if (openChar === '(' && braceDepth === 0) {
+        if (char === '(') parenDepth += 1
+        else if (char === ')') {
+          parenDepth -= 1
+          if (parenDepth === 0) break
+        }
       }
+      if (openChar === '{' && braceDepth === 0) break
     }
     const body = input.slice(bodyStart, index)
     const fields: Record<string, string> = {}
@@ -147,7 +157,16 @@ export function authorsOf(value: string): string[] {
 export function lastNameOf(author: string): string {
   const clean = author.replace(/\s+/gu, ' ').trim()
   const comma = clean.indexOf(',')
-  const family = comma !== -1 ? clean.slice(0, comma).trim() : (clean.split(' ').at(-1) ?? clean)
+  let family: string
+  if (comma !== -1) {
+    family = clean.slice(0, comma).trim()
+  } else {
+    const tokens = clean.split(' ')
+    // PubMed writes `Doe J` (family + initials) while Crossref writes
+    // `Doe, Jane`; the trailing initials are given names, not the family name.
+    const trailingInitials = tokens.length > 1 && /^[A-Z]{1,3}\.?$/u.test(tokens.at(-1) ?? '')
+    family = trailingInitials ? tokens.slice(0, -1).join(' ') : (tokens.at(-1) ?? clean)
+  }
   // Diacritics are a transliteration difference, not a different author.
   return stripDiacritics(family).toLowerCase()
 }

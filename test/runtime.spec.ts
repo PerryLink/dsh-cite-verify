@@ -72,6 +72,26 @@ describe('verify', () => {
     const evidence = await second.rt.port().getEvidence(result.evidenceId!)
     expect(evidence).toBeDefined()
   })
+
+  it('re-verifies the same answer without an evidence conflict', async () => {
+    const first = await runtime()
+    const initial = await first.rt.verify({ doi: '10.1000/xyz' })
+    // A later clock must not make the same immutable snapshot look like edited
+    // evidence; the identity is the snapshot plus the checks, not "now".
+    const later = new CiteVerifyRuntime({
+      config: resolveConfig({ root }),
+      client: scriptedClient([
+        { match: 'api.crossref.org/works/10.1000/xyz', body: await fixture('crossref-work.json') },
+      ]).client,
+      now: () => new Date('2026-04-02T12:00:00.000Z'),
+    })
+    const again = await later.verify({ doi: '10.1000/xyz' }, { fresh: true })
+    expect(again.status).toBe(initial.status)
+    expect(again.evidenceId).toBe(initial.evidenceId)
+    await expect(later.verify({ doi: '10.1000/xyz', title: 'A different expectation' }, { fresh: true })).resolves.toMatchObject({
+      ok: true,
+    })
+  })
 })
 
 describe('batch', () => {

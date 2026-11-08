@@ -110,6 +110,16 @@ describe('verifyCitation', () => {
     expect(outcome.checks.some(check => check.check === 'other' && check.status === 'pass')).toBe(true)
   })
 
+  it('compares cited authors against PubMed family+initials without a false failure', async () => {
+    const outcome = await verifyCitation(
+      { pmid: '12345', authors: ['Doe, Jane', 'Roe, Richard'] },
+      await deps(await crossrefRoutes()),
+    )
+    const authorCheck = outcome.checks.find(item => item.checkId.startsWith('chk-authors-'))
+    expect(authorCheck?.status).toBe('pass')
+    expect(outcome.status).toBe('ok')
+  })
+
   it('resolves an arXiv id and labels the record as a preprint', async () => {
     const outcome = await verifyCitation({ arxiv: '2401.00001' }, await deps(await crossrefRoutes()))
     expect(outcome.resolved?.provider).toBe('arxiv')

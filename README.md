@@ -161,7 +161,7 @@ Raw per-case predictions: [`bench/results-citations.json`](bench/results-citatio
 
 ### Unit and integration tests
 
-- **49 tests across 6 files**: HTTP bounds (allowlist, redirect re-validation, retries, timeout mapping), BibTeX, comparison (incl. diacritics/subtitle), verification (found / not-found / timeout / PMID / arXiv / BibTeX / update notice / two-source cross-check / cache / fresh), runtime (REP record validity, persistence, batch locality, duplicates, fix diffs), tool surface, package contract.
+- **53 tests across 6 files**: HTTP bounds (allowlist, redirect re-validation, retries, timeout mapping), BibTeX (braced and parenthesised entries), comparison (incl. diacritics/subtitle and PubMed family+initials), verification (found / not-found / timeout / PMID / arXiv / BibTeX / update notice / two-source cross-check / cache / fresh), runtime (REP record validity, persistence, re-verification without an evidence conflict, batch locality, duplicates, fix diffs), tool surface, package contract.
 - Every provider interaction in the test suite is scripted — CI never depends on the network.
 
 ## Development

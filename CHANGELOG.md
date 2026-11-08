@@ -6,6 +6,19 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- Re-verifying the same provider answer no longer fails with `STORE_ERROR`:
+  evidence identity is the immutable snapshot plus the checks, and its
+  timestamps come from the snapshot, so an unchanged answer dedupes while a
+  different cited expectation produces distinct evidence.
+- PubMed `Family Initials` authors compare correctly against Crossref
+  `Family, Given` authors (`Doe J` ≡ `Doe, Jane`) instead of being reported as
+  a mismatch.
+- BibTeX entries written with parentheses (`@article(key, ...)`) terminate at
+  the matching `)` and no longer swallow the following entry.
+- Benchmark results are published (see README) rather than listed as pending.
+
 ## [0.1.0] - 2026-11-08
 
 First release: citation existence and metadata verification.
@@ -25,11 +38,12 @@ First release: citation existence and metadata verification.
   429/503, SSRF-resistant hop checks.
 - Response cache with TTL and a `fresh` bypass.
 - `not_found` is always a `skipped` check and leaves the evidence `unchecked`.
-- 49 tests across HTTP bounds, BibTeX, comparison, verification, runtime and
+- 53 tests across HTTP bounds, BibTeX, comparison, verification, runtime and
   tool surface; every provider interaction is scripted (CI is offline).
 
 ### Known limitations
 
 - Retraction status is not queried (record-level update notices only).
 - OpenAlex is allowlisted but not yet used as a second opinion.
-- No precision/recall published yet — pending `dsh-research-bench`.
+- Benchmark adapter and frozen-fixture results are published in the README;
+  the dataset is synthetic and is not a real-world accuracy claim.
