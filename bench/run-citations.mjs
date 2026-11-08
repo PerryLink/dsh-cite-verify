@@ -137,7 +137,6 @@ const metrics = {
 }
 
 const report = {
-  generatedAt: new Date().toISOString(),
   command: 'node bench/run-citations.mjs',
   benchDir: benchRoot,
   metrics,

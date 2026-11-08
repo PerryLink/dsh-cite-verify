@@ -1,5 +1,4 @@
 {
-  "generatedAt": "2026-11-08T09:06:13.410Z",
   "command": "node bench/run-citations.mjs",
   "benchDir": "/mnt/d/Projects/dsh/plugins/dsh-research-bench",
   "metrics": {
