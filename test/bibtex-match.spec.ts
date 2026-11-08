@@ -6,6 +6,7 @@
 import { describe, expect, it } from 'vitest'
 import { authorsOf, lastNameOf, parseBibtex, parseBibtexEntry, serializeBibtex, yearOf } from '../src/bibtex.ts'
 import { compareAuthors, compareTitle, compareVenue, compareYear, normalizeText, similarity } from '../src/match.ts'
+import { stripDiacritics } from '../src/text.ts'
 
 describe('bibtex', () => {
   const entry = [
@@ -53,6 +54,27 @@ describe('bibtex', () => {
 describe('comparison', () => {
   it('normalizes punctuation and case', () => {
     expect(normalizeText('  A Study: of Things! ')).toBe('a study of things')
+  })
+
+  it('folds diacritics and non-decomposable letters', () => {
+    expect(stripDiacritics('Müller')).toBe('Muller')
+    expect(stripDiacritics('Østergård')).toBe('Ostergard')
+    expect(stripDiacritics('Straße')).toBe('Strasse')
+    expect(normalizeText('Müller & Søn')).toBe('muller son')
+    expect(lastNameOf('Østergård, Søren')).toBe('ostergard')
+  })
+
+  it('does not treat a transliteration difference as a wrong author', () => {
+    const comparison = compareAuthors(['Muller, Jurgen', 'Ostergard, Soren'], ['Müller, Jürgen', 'Østergård, Søren'])
+    expect(comparison.missing).toEqual([])
+    expect(comparison.ratio).toBe(1)
+  })
+
+  it('accepts a cited title that omits the subtitle', () => {
+    const comparison = compareTitle('A synthetic study of anchoring', 'A synthetic study of anchoring: evidence from fixtures', 0.85)
+    expect(comparison.matched).toBe(true)
+    // Containment needs at least three tokens, so a single generic word cannot match a long unrelated title.
+    expect(compareTitle('anchoring', 'A synthetic study of anchoring', 0.85).matched).toBe(false)
   })
 
   it('matches titles within the threshold and exposes missing tokens', () => {

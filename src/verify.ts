@@ -219,10 +219,13 @@ function check(
     expected?: unknown
     actual?: unknown
     locator?: CheckResult['locator']
+    /** Machine-readable field key encoded into checkId (`chk-<key>-<hash>`). */
+    key?: string
   } = {},
 ): CheckResult {
+  const digest = stableId('chk', [subject, kind, options.expected ?? '', status]).slice(-6)
   return {
-    checkId: stableId('chk', [subject, kind, options.expected ?? '', status]),
+    checkId: `chk-${options.key ?? kind}-${digest}`,
     check: kind,
     status,
     detail,
@@ -370,7 +373,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
           lookup.kind,
           'skipped',
           `${lookup.provider} returned no record for ${lookup.identifier}; not_found is not evidence of fabrication and not evidence of cleanliness`,
-          { code: 'not_found', expected: { provider: lookup.provider, identifier: lookup.identifier } },
+          { code: 'not_found', expected: { provider: lookup.provider, identifier: lookup.identifier }, key: lookup.provider },
         ),
       )
       continue
@@ -387,7 +390,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
         'pass',
         `${lookup.provider} resolved ${lookup.identifier}` +
           (outcome.record.identifiers.doi === undefined ? '' : ` (DOI ${outcome.record.identifiers.doi})`),
-        { expected: { provider: lookup.provider, identifier: lookup.identifier }, actual: { doi: outcome.record.identifiers.doi } },
+        { expected: { provider: lookup.provider, identifier: lookup.identifier }, actual: { doi: outcome.record.identifiers.doi }, key: lookup.provider },
       ),
     )
   }
@@ -407,11 +410,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
         comparison.matched
           ? `title matches (similarity ${comparison.similarity})`
           : `title differs (similarity ${comparison.similarity}); cited "${expected.title}" but the record says "${primary.title}"`,
-        {
-          expected: expected.title,
-          actual: primary.title,
-          locator: undefined,
-        },
+        { expected: expected.title, actual: primary.title, key: 'title' },
       ),
     )
   }
@@ -426,7 +425,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
         status === 'pass'
           ? `authors match (${comparison.matched.join(', ')})`
           : `author mismatch: missing ${comparison.missing.join(', ') || '(none)'}; record has ${primary.authors.join('; ')}`,
-        { expected: expected.authors, actual: primary.authors },
+        { expected: expected.authors, actual: primary.authors, key: 'authors' },
       ),
     )
   }
@@ -437,6 +436,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
       check(subject, 'metadata-match', status, `year: cited ${expected.year}, record ${primary.year} (${comparison})`, {
         expected: expected.year,
         actual: primary.year,
+        key: 'year',
       }),
     )
   }
@@ -450,7 +450,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
         comparison.matched
           ? `venue matches (similarity ${comparison.similarity})`
           : `venue differs (similarity ${comparison.similarity}): cited "${expected.venue}", record "${primary.venue}"`,
-        { expected: expected.venue, actual: primary.venue },
+        { expected: expected.venue, actual: primary.venue, key: 'venue' },
       ),
     )
   }
@@ -460,6 +460,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
       check(subject, 'metadata-match', same ? 'pass' : 'warn', `pages: cited ${expected.pages}, record ${primary.pages}`, {
         expected: expected.pages,
         actual: primary.pages,
+        key: 'pages',
       }),
     )
   }
@@ -472,6 +473,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
         check(subject, 'version-match', value >= deps.titleThreshold ? 'pass' : 'warn', `two sources agree on the title (similarity ${value.toFixed(4)})`, {
           expected: { provider: first.provider, title: first.title },
           actual: { provider: second.provider, title: second.title },
+          key: 'version',
         }),
       )
     }
@@ -483,7 +485,7 @@ export async function verifyCitation(input: CitationInput, deps: VerifyDeps): Pr
         'retraction',
         'warn',
         `this record carries update notices (${primary.updates.map(update => update.type).join(', ')}); whether the cited work itself is retracted needs dsh-retraction-watch (v0.1 does not query retraction status)`,
-        { actual: primary.updates },
+        { actual: primary.updates, key: 'retraction' },
       ),
     )
   } else {

@@ -77,7 +77,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify:package": "node scripts/verify-package.mjs"
+    "verify:package": "node scripts/verify-package.mjs",
+    "bench:citations": "pnpm run build && node bench/run-citations.mjs"
   },
   "license": "Apache-2.0"
 }

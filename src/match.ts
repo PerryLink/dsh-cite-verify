@@ -9,16 +9,16 @@
  */
 
 import { lastNameOf } from './bibtex.ts'
+import { stripDiacritics } from './text.ts'
 
 /**
- * Normalize text for comparison: NFKC, lowercase, punctuation → space,
- * whitespace collapsed. CJK characters are kept as-is.
+ * Normalize text for comparison: NFKC, diacritics removed, lowercase,
+ * punctuation → space, whitespace collapsed. CJK characters are kept as-is.
  * @param value - the raw text.
  * @returns the normalized text.
  */
 export function normalizeText(value: string): string {
-  return value
-    .normalize('NFKC')
+  return stripDiacritics(value.normalize('NFKC'))
     .toLowerCase()
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
@@ -76,7 +76,11 @@ export function compareTitle(expected: string, actual: string, threshold: number
   const actualTokens = new Set(tokensOf(actual))
   const missingTokens = expectedTokens.filter(token => !actualTokens.has(token))
   const value = similarity(expected, actual)
-  return { similarity: Number(value.toFixed(4)), matched: value >= threshold, expectedTokens, missingTokens }
+  // A cited title that is a complete prefix of the real one (subtitle omitted)
+  // is a citation style, not a wrong title. Require a minimum token count so a
+  // single generic word cannot "contain" an unrelated title.
+  const contained = expectedTokens.length >= 3 && missingTokens.length === 0
+  return { similarity: Number(value.toFixed(4)), matched: contained || value >= threshold, expectedTokens, missingTokens }
 }
 
 /** The author comparison outcome. */

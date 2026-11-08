@@ -25,7 +25,7 @@ First release: citation existence and metadata verification.
   429/503, SSRF-resistant hop checks.
 - Response cache with TTL and a `fresh` bypass.
 - `not_found` is always a `skipped` check and leaves the evidence `unchecked`.
-- 46 tests across HTTP bounds, BibTeX, comparison, verification, runtime and
+- 49 tests across HTTP bounds, BibTeX, comparison, verification, runtime and
   tool surface; every provider interaction is scripted (CI is offline).
 
 ### Known limitations

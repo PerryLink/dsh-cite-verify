@@ -131,8 +131,37 @@ Invalid values fail loud at mount.
 
 ## Evaluation
 
-- **46 tests across 6 files**: HTTP bounds (allowlist, redirect re-validation, retries, timeout mapping), BibTeX, comparison, verification (found / not-found / timeout / PMID / arXiv / BibTeX / update notice / two-source cross-check / cache / fresh), runtime (REP record validity, persistence, batch locality, duplicates, fix diffs), tool surface, package contract.
-- **No precision/recall number is published yet.** The plan of record requires `dsh-research-bench` (100 labelled citations) for that; until it runs, this README claims no accuracy. The next milestone fills this section with precision / recall / false-positive rate and the exact command.
+### Benchmark — `dsh-research-bench` citations v0.1.0 (100 cases)
+
+Command (requires the bench checkout next to this repo, or `BENCH_DIR`):
+
+```sh
+pnpm run bench:citations
+```
+
+Result (reproducible, frozen dataset, every provider call answered from the case fixtures — no network):
+
+| metric | value |
+|---|---:|
+| existence precision | **1.00** |
+| existence recall | **1.00** |
+| field precision | **0.9559** |
+| field recall | **1.00** |
+| field F1 | **0.9774** |
+| update-notice precision | **1.00** |
+| update-notice recall | **1.00** |
+| clean false-positive rate | **0.10** |
+| exact-match rate | **0.97** |
+
+The three false positives are all *venue abbreviations* (`J. Synth. Tests` vs `Journal of Synthetic Tests`) on otherwise-correct citations: venue comparison is token overlap with a 0.6 threshold and does not expand journal abbreviations. That is a known limitation, reported rather than hidden. Diacritic/transliteration differences (`Müller`/`Muller`, `Østergård`/`Ostergard`) and omitted subtitles no longer produce false positives.
+
+Raw per-case predictions: [`bench/results-citations.json`](bench/results-citations.json).
+
+**Scope warning**: the dataset is synthetic and clean. A 1.0 existence score says the checking logic maps frozen fixtures to correct verdicts; it does **not** predict real-world accuracy, where provider drift, transliteration and ambiguous metadata dominate. `dsh-research-bench` is a test split and is not used for tuning.
+
+### Unit and integration tests
+
+- **49 tests across 6 files**: HTTP bounds (allowlist, redirect re-validation, retries, timeout mapping), BibTeX, comparison (incl. diacritics/subtitle), verification (found / not-found / timeout / PMID / arXiv / BibTeX / update notice / two-source cross-check / cache / fresh), runtime (REP record validity, persistence, batch locality, duplicates, fix diffs), tool surface, package contract.
 - Every provider interaction in the test suite is scripted — CI never depends on the network.
 
 ## Development

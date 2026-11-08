@@ -34,6 +34,7 @@ export type { CacheEntry } from './cache.ts'
 export { authorsOf, lastNameOf, parseBibtex, parseBibtexEntry, serializeBibtex, yearOf } from './bibtex.ts'
 export type { BibEntry } from './bibtex.ts'
 export { compareAuthors, compareTitle, compareVenue, compareYear, normalizeText, similarity } from './match.ts'
+export { stripDiacritics } from './text.ts'
 export { decodeXmlEntities, parseArxiv, parseCrossref, parsePubmed } from './providers.ts'
 export type { CitationRecord, ProviderOutcome } from './providers.ts'
 export {

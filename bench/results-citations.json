@@ -1,0 +1,1156 @@
+{
+  "generatedAt": "2026-11-08T09:06:13.410Z",
+  "command": "node bench/run-citations.mjs",
+  "benchDir": "/mnt/d/Projects/dsh/plugins/dsh-research-bench",
+  "metrics": {
+    "dataset": {
+      "name": "citations",
+      "version": "0.1.0",
+      "total": 100,
+      "cases": 100
+    },
+    "plugin": "@perrylink/dsh-cite-verify",
+    "existence": {
+      "precision": 1,
+      "recall": 1,
+      "tp": 8,
+      "fp": 0,
+      "fn": 0
+    },
+    "fieldMismatch": {
+      "precision": 0.9559,
+      "recall": 1,
+      "f1": 0.9774,
+      "tp": 65,
+      "fp": 3,
+      "fn": 0
+    },
+    "updateNotice": {
+      "precision": 1,
+      "recall": 1,
+      "tp": 14,
+      "fp": 0,
+      "fn": 0
+    },
+    "cleanFalsePositiveRate": 0.1,
+    "exactMatchRate": 0.97,
+    "cleanCases": 30
+  },
+  "predictions": [
+    {
+      "id": "cite-0001",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0002",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0003",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0004",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0005",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0006",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0007",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0008",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0009",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0010",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0011",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0012",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "venue"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0013",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0014",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0015",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "venue"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0016",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0017",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0018",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "venue"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0019",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0020",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0021",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0022",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0023",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0024",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0025",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0026",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0027",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0028",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0029",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0030",
+      "category": "correct",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0031",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0032",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0033",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0034",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0035",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0036",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0037",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0038",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0039",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0040",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0041",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0042",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0043",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0044",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0045",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0046",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0047",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0048",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0049",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0050",
+      "category": "wrong-author",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0051",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0052",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0053",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0054",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0055",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0056",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0057",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0058",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0059",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0060",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0061",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0062",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0063",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0064",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0065",
+      "category": "wrong-year",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0066",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": false,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "unchecked"
+      }
+    },
+    {
+      "id": "cite-0067",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": false,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "unchecked"
+      }
+    },
+    {
+      "id": "cite-0068",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": false,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "unchecked"
+      }
+    },
+    {
+      "id": "cite-0069",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": false,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "unchecked"
+      }
+    },
+    {
+      "id": "cite-0070",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": false,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "unchecked"
+      }
+    },
+    {
+      "id": "cite-0071",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": false,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "unchecked"
+      }
+    },
+    {
+      "id": "cite-0072",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": false,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "unchecked"
+      }
+    },
+    {
+      "id": "cite-0073",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": false,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "unchecked"
+      }
+    },
+    {
+      "id": "cite-0074",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors",
+          "title",
+          "venue",
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0075",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors",
+          "title",
+          "venue",
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0076",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors",
+          "title",
+          "venue",
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0077",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors",
+          "title",
+          "venue",
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0078",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors",
+          "title",
+          "venue",
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0079",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors",
+          "title",
+          "venue",
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0080",
+      "category": "wrong-doi",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "authors",
+          "title",
+          "venue",
+          "year"
+        ],
+        "update_notice": false,
+        "status": "fail"
+      }
+    },
+    {
+      "id": "cite-0081",
+      "category": "retracted",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0082",
+      "category": "retracted",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0083",
+      "category": "retracted",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0084",
+      "category": "retracted",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0085",
+      "category": "retracted",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0086",
+      "category": "retracted",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0087",
+      "category": "retracted",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0088",
+      "category": "retracted",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0089",
+      "category": "correction",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0090",
+      "category": "correction",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0091",
+      "category": "correction",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0092",
+      "category": "correction",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0093",
+      "category": "correction",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0094",
+      "category": "correction",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": true,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0095",
+      "category": "preprint",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0096",
+      "category": "preprint",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0097",
+      "category": "preprint",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0098",
+      "category": "preprint",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [],
+        "update_notice": false,
+        "status": "ok"
+      }
+    },
+    {
+      "id": "cite-0099",
+      "category": "disagreement",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "version"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    },
+    {
+      "id": "cite-0100",
+      "category": "disagreement",
+      "prediction": {
+        "exists": true,
+        "mismatch_fields": [
+          "version"
+        ],
+        "update_notice": false,
+        "status": "warn"
+      }
+    }
+  ]
+}

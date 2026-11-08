@@ -131,8 +131,37 @@ dsh plugin --profile <name> remove dsh-cite-verify
 
 ## 评测
 
-- **46 个测试 / 6 个文件**：HTTP 边界（白名单、重定向复验、重试、超时映射）、BibTeX、比较、核验（命中/查无/超时/PMID/arXiv/BibTeX/更新通知/双源交叉/缓存/fresh）、运行时（REP 记录合法、持久化、批量失败隔离、重复、修复差异）、工具面、包契约。
-- **尚未发布 precision/recall 数字。** 计划要求用 `dsh-research-bench`（100 条标注引用）来测；在它跑通之前，本 README 不声称任何准确率，下一里程碑会把 precision / recall / 误报率与复现命令写进这一节。
+### 基准 —— `dsh-research-bench` citations v0.1.0（100 条）
+
+命令（bench 与本仓并列检出，或设 `BENCH_DIR`）：
+
+```sh
+pnpm run bench:citations
+```
+
+结果（可复现；数据冻结；所有数据源调用都由用例自带 fixture 回答，不联网）：
+
+| 指标 | 值 |
+|---|---:|
+| 存在性 precision | **1.00** |
+| 存在性 recall | **1.00** |
+| 字段 precision | **0.9559** |
+| 字段 recall | **1.00** |
+| 字段 F1 | **0.9774** |
+| 更新通知 precision | **1.00** |
+| 更新通知 recall | **1.00** |
+| 干净样本误报率 | **0.10** |
+| 整案完全一致率 | **0.97** |
+
+3 个误报全部是**期刊缩写**（`J. Synth. Tests` vs `Journal of Synthetic Tests`）：期刊比较是 0.6 阈值的词元重叠，不展开期刊缩写。这是已知限制，如实报告。变音/转写差异（`Müller`/`Muller`、`Østergård`/`Ostergard`）与省略副标题已不再误报。
+
+逐案预测： [`bench/results-citations.json`](bench/results-citations.json)。
+
+**范围警告**：数据集是合成的、干净的。存在性 1.0 说明检查逻辑能把冻结 fixture 映射成正确 verdict，**不代表**真实世界准确率 —— 真实场景里主导因素是数据源漂移、音译与元数据歧义。`dsh-research-bench` 是测试集，不用于调参。
+
+### 单元/集成测试
+
+- **49 个测试 / 6 个文件**：HTTP 边界（白名单、重定向复验、重试、超时映射）、BibTeX、比较（含变音/副标题）、核验（命中/查无/超时/PMID/arXiv/BibTeX/更新通知/双源交叉/缓存/fresh）、运行时（REP 记录合法、持久化、批量失败隔离、重复、修复差异）、工具面、包契约。
 - 测试里所有数据源交互都是脚本化的 —— CI 不依赖外网。
 
 ## 开发

@@ -9,6 +9,8 @@
  * @module dsh-cite-verify/bibtex
  */
 
+import { stripDiacritics } from './text.ts'
+
 /** One parsed BibTeX entry. */
 export interface BibEntry {
   /** Entry type, lowercased (`article`, `book`, …). */
@@ -145,9 +147,9 @@ export function authorsOf(value: string): string[] {
 export function lastNameOf(author: string): string {
   const clean = author.replace(/\s+/gu, ' ').trim()
   const comma = clean.indexOf(',')
-  if (comma !== -1) return clean.slice(0, comma).trim().toLowerCase()
-  const parts = clean.split(' ')
-  return (parts.at(-1) ?? clean).toLowerCase()
+  const family = comma !== -1 ? clean.slice(0, comma).trim() : (clean.split(' ').at(-1) ?? clean)
+  // Diacritics are a transliteration difference, not a different author.
+  return stripDiacritics(family).toLowerCase()
 }
 
 /**
