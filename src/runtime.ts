@@ -1,6 +1,6 @@
 /**
  * The verification runtime: wires the bounded client, the cache, the providers
- * and the REP store into the three tools.
+ * and the REP store into the citation tools.
  *
  * Evidence is a content-addressed snapshot of the provider's own response, so a
  * later reviewer can re-read exactly what Crossref/PubMed/arXiv said instead of

@@ -97,7 +97,10 @@ export interface ResolvedSummary {
   readonly authors: readonly string[]
   readonly year?: number
   readonly venue?: string
+  readonly volume?: string
+  readonly issue?: string
   readonly pages?: string
+  readonly publisher?: string
   readonly type?: string
 }
 
@@ -281,7 +284,10 @@ function summaryOf(record: CitationRecord): ResolvedSummary {
     authors: record.authors,
     ...(record.year === undefined ? {} : { year: record.year }),
     ...(record.venue === undefined ? {} : { venue: record.venue }),
+    ...(record.volume === undefined ? {} : { volume: record.volume }),
+    ...(record.issue === undefined ? {} : { issue: record.issue }),
     ...(record.pages === undefined ? {} : { pages: record.pages }),
+    ...(record.publisher === undefined ? {} : { publisher: record.publisher }),
     ...(record.type === undefined ? {} : { type: record.type }),
   }
 }

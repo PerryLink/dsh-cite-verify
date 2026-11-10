@@ -12,6 +12,8 @@ import { CiteNetworkError } from '../src/http.ts'
 import { CiteVerifyRuntime } from '../src/runtime.ts'
 import { makeCiteBatchTool } from '../src/tools/cite-batch.ts'
 import type { CiteBatchValue } from '../src/tools/cite-batch.ts'
+import { makeCiteExportTool } from '../src/tools/cite-export.ts'
+import type { CiteExportFailure, CiteExportValue } from '../src/tools/cite-export.ts'
 import { makeCiteFixTool } from '../src/tools/cite-fix.ts'
 import type { CiteFixValue } from '../src/tools/cite-fix.ts'
 import { makeCiteVerifyTool } from '../src/tools/cite-verify.ts'
@@ -48,6 +50,7 @@ describe('tool interfaces', () => {
       [makeCiteVerifyTool(rt), 'cite_verify'],
       [makeCiteBatchTool(rt), 'cite_batch'],
       [makeCiteFixTool(rt), 'cite_fix'],
+      [makeCiteExportTool(rt), 'cite_export'],
     ] as const) {
       expect(tool.name).toBe(name)
       expect(Object.keys(tool.parameters).length).toBeGreaterThan(0)
@@ -112,6 +115,36 @@ describe('tool interfaces', () => {
     const text = (failingTool.output.render({}, value as never) as Array<{ text: string }>)[0]?.text ?? ''
     expect(text).toContain('lookup failed')
     expect(text).not.toContain('no record found')
+  })
+
+
+  it('cite_export resolves an identifier and formats BibTeX', async () => {
+    const tool = makeCiteExportTool(await runtime())
+    const value = (await tool.execute({ doi: '10.1000/xyz', style: 'bibtex', volume: '12', issue: '3' }, EXEC)) as CiteExportValue | CiteExportFailure
+    expect(value.ok).toBe(true)
+    if (!value.ok) throw new Error('expected success')
+    expect(value.entry).toContain('@article{doe2020a,')
+    expect(value.entry).toContain('journal = {Journal of Tests}')
+    expect(value.missing).toEqual([])
+    const blocks = tool.output.render({}, value as never) as Array<{ text: string }>
+    expect(blocks[0]?.text).toContain('cite_export (bibtex)')
+    expect(blocks[0]?.text).toContain('@article')
+  })
+
+  it('cite_export formats an offline record and reports unknown styles', async () => {
+    const tool = makeCiteExportTool(await runtime())
+    const value = (await tool.execute({
+      style: 'apa',
+      record: { provider: 'record', title: 'Offline', authors: ['Doe, Jane'], year: 2024 },
+    }, EXEC)) as CiteExportValue | CiteExportFailure
+    expect(value.ok).toBe(true)
+    if (!value.ok) throw new Error('expected success')
+    expect(value.entry).toContain('Doe, J. (2024). Offline.')
+
+    const bad = (await tool.execute({ doi: '10.1000/xyz', style: 'mla' }, EXEC)) as CiteExportValue | CiteExportFailure
+    expect(bad.ok).toBe(false)
+    if (bad.ok) throw new Error('expected failure')
+    expect(bad.error.code).toBe('INVALID_INPUT')
   })
 
   it('cite_fix returns text only', async () => {

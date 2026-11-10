@@ -1,7 +1,7 @@
 /**
  * `dsh-cite-verify` — citation existence and metadata verification.
  *
- * Three tools, one job: turn a citation into a checkable provider record with
+ * Four tools, one job: turn a citation into a checkable provider record with
  * field-by-field verdicts and an immutable response snapshot. Network access is
  * bounded by an allowlist, timeouts, a per-host interval and a redirect budget;
  * `not_found` is reported as skipped, never as fabrication.
@@ -14,6 +14,7 @@ import type { Context } from '@deepseek-ai/cordis'
 import { Config, resolveConfig, type Config as ConfigShape } from './config.ts'
 import { CiteVerifyRuntime, type EvidencePort } from './runtime.ts'
 import { makeCiteBatchTool } from './tools/cite-batch.ts'
+import { makeCiteExportTool } from './tools/cite-export.ts'
 import { makeCiteFixTool } from './tools/cite-fix.ts'
 import { makeCiteVerifyTool } from './tools/cite-verify.ts'
 
@@ -68,9 +69,13 @@ export type {
 export { makeCiteVerifyTool } from './tools/cite-verify.ts'
 export { makeCiteBatchTool } from './tools/cite-batch.ts'
 export { makeCiteFixTool } from './tools/cite-fix.ts'
+export { makeCiteExportTool } from './tools/cite-export.ts'
+export type { CiteExportFailure, CiteExportValue } from './tools/cite-export.ts'
+export { CITATION_STYLES, exportCitation, isCitationStyle, parseName } from './export.ts'
+export type { CitationExport, CitationExtras, CitationStyle } from './export.ts'
 
 /**
- * Mount the three tools.
+ * Mount the four tools.
  * @param ctx - the plugin context (host).
  * @param config - raw plugin config.
  */
@@ -89,4 +94,5 @@ export function apply(ctx: Context, config: ConfigShape): void {
   ctx.effect(() => ctx.tools.register(makeCiteVerifyTool(runtime)), 'cite-verify: cite_verify tool')
   ctx.effect(() => ctx.tools.register(makeCiteBatchTool(runtime)), 'cite-verify: cite_batch tool')
   ctx.effect(() => ctx.tools.register(makeCiteFixTool(runtime)), 'cite-verify: cite_fix tool')
+  ctx.effect(() => ctx.tools.register(makeCiteExportTool(runtime)), 'cite-verify: cite_export tool')
 }

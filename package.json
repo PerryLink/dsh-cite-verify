@@ -1,6 +1,6 @@
 {
   "name": "dsh-cite-verify",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Verify that a citation exists and that its metadata is right, for DeepSeek Harness: DOI / PMID / arXiv / BibTeX resolution through Crossref, PubMed and arXiv, field-by-field metadata comparison, version/duplicate/retraction observations, content-addressed response snapshots and a REP v1 evidence record. not_found is reported as skipped, never as fabrication.",
   "author": "PerryLink contributors",
   "repository": {

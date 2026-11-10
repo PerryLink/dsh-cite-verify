@@ -17,6 +17,7 @@
 - 把引用里的写法与解析出的记录逐项比对：**标题**（词元相似度）、**作者**（姓氏）、**年份**（±1 记警告）、**期刊/会议**、**页码**。
 - 把数据源返回的原始响应存成不可变快照，并注册一条携带这些检查结果的 **REP v1 证据**。
 - `cite_fix` 以**文本**形式返回修正后的 BibTeX 条目 —— 它从不改动文件。
+- `cite_export` 把解析出的记录格式化为 **GB/T 7714（顺序编码制）、APA 7、IEEE、Vancouver、BibTeX、RIS 或 CSL-JSON** —— 缺字段只报告，不臆造。
 
 ## 它不做什么
 
@@ -25,6 +26,7 @@
 - **不读 PDF。** 那是 `dsh-doc-anchor` 的事。
 - **不抓站。** 只调用四个白名单内的 HTTPS API；不碰 CNKI，不碰 Sci-Hub，也不绕过付费墙。
 - **不做静默修复。** `cite_fix` 只报告差异；是否采纳由用户决定。
+- **不做完整样式引擎，也不改大小写。** 七种内置格式；需要其它样式时导出 CSL-JSON 交给外部 `citeproc`。标题保持原样。
 
 ## 兼容性
 
@@ -69,6 +71,22 @@ dsh plugin --profile <name> remove dsh-cite-verify
 ### `cite_fix`
 
 输入与 `cite_verify` 相同。返回 `{ ok, bibtex, diffs[], status, evidenceId?, warnings[] }`。**只输出文本 —— 从不写盘。**
+
+### `cite_export`
+
+标识符输入与 `cite_verify` 相同，另有 `style` 以及可选的 `volume`、`issue`、`publisher`、`url`、`language`（`zh` 用“等”，否则用 et al.）与 `index`（IEEE 序号）。也可以直接传 `record` 对象做离线格式化。
+
+| `style` | 格式 |
+|---|---|
+| `gbt7714-numeric`（默认） | 作者. 题名[J]. 刊名, 年, 卷(期): 页. DOI. |
+| `apa` | Author, A. A., & Author, B. B. (Year). Title. *Journal, Volume*(Issue), pages. https://doi.org/… |
+| `ieee` | [n] A. A. Author, "Title," *Journal*, vol. V, no. I, pp. P, Year. |
+| `vancouver` | Author AB. Title. Journal. Year;Volume(Issue):Pages. |
+| `bibtex` | `@article{key, …}`，key 确定性生成 |
+| `ris` | `TY  - JOUR` … `ER  -` |
+| `csl-json` | 交给外部处理器的 CSL-JSON |
+
+返回 `{ ok, style, entry, missing[], evidenceId?, warnings[] }`。`missing` 列出记录中缺失的字段；带标识符时仍走与 `cite_verify` 相同的 provider 查询与 REP 证据路径。
 
 ### 错误码
 

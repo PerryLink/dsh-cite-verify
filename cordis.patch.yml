@@ -1,4 +1,4 @@
-# dsh-cite-verify bundle patch: mount the citation verification tools.
+# dsh-cite-verify bundle patch: mount the citation verification and export tools.
 #
 # Every key below is a Config field (Schemastery schema); invalid values fail the
 # profile load loudly. Network access is allowed only to the metadata APIs on
@@ -13,7 +13,7 @@
         root: .cite-verify
         # User-Agent sent to Crossref/PubMed/arXiv (put a contact address here
         # when you deploy this at scale).
-        userAgent: dsh-cite-verify/0.1.0 (https://github.com/PerryLink/dsh-cite-verify)
+        userAgent: dsh-cite-verify/0.2.0 (https://github.com/PerryLink/dsh-cite-verify)
         # Per-request deadline.
         timeoutMs: 15000
         # Minimum delay between two requests to the same host.

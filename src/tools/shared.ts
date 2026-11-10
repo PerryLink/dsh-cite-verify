@@ -42,7 +42,10 @@ export const RESOLVED_SCHEMA = {
     authors: { type: 'array', items: { type: 'string' } },
     year: { type: 'integer' },
     venue: { type: 'string' },
+    volume: { type: 'string' },
+    issue: { type: 'string' },
     pages: { type: 'string' },
+    publisher: { type: 'string' },
     type: { type: 'string' },
   },
 } as const

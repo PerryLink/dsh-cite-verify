@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest'
 import { apply } from '../src/index.ts'
 
 describe('mount', () => {
-  it('honours enabled and registers three unique tools', () => {
+  it('honours enabled and registers four unique tools', () => {
     const names: string[] = []
     const makeCtx = (): never =>
       ({
@@ -25,7 +25,7 @@ describe('mount', () => {
     apply(makeCtx(), { enabled: false })
     expect(names).toEqual([])
     apply(makeCtx(), { enabled: true })
-    expect(names).toHaveLength(3)
-    expect(new Set(names).size).toBe(3)
+    expect(names).toHaveLength(4)
+    expect(new Set(names).size).toBe(4)
   })
 })

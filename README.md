@@ -17,6 +17,7 @@ English · [简体中文](README-zh.md)
 - Compares the citation as written against the resolved record: **title** (token similarity), **authors** (family names), **year** (±1 = warning), **venue**, **pages**.
 - Stores the provider's exact response as an immutable snapshot and registers a **REP v1 evidence item** with those checks.
 - `cite_fix` returns a corrected BibTeX entry **as text** — it never edits files.
+- `cite_export` formats the resolved record as **GB/T 7714 (numeric), APA 7, IEEE, Vancouver, BibTeX, RIS or CSL-JSON** — missing fields are reported, never guessed.
 
 ## What it does not do
 
@@ -25,6 +26,7 @@ English · [简体中文](README-zh.md)
 - **No PDF reading.** That is `dsh-doc-anchor`.
 - **No scraping.** Only the four allowlisted HTTPS APIs; no CNKI, no Sci-Hub, no paywall bypass.
 - **No silent repair.** `cite_fix` reports diffs; applying them is the user's decision.
+- **No style engine and no case rewriting.** Seven built-in formats; CSL-JSON is the escape hatch for external `citeproc`. The title is preserved as given.
 
 ## Compatibility
 
@@ -69,6 +71,22 @@ Each item carries `status`, `lookupError?`, `duplicate?` and `evidenceId?`. A re
 ### `cite_fix`
 
 Same inputs as `cite_verify`. Returns `{ ok, bibtex, diffs[], status, evidenceId?, warnings[] }`. **Text only — never writes to disk.**
+
+### `cite_export`
+
+Same identifier inputs as `cite_verify`, plus `style` and optional `volume`, `issue`, `publisher`, `url`, `language` (`zh` selects 等 over et al.) and `index` (IEEE reference number). Pass a `record` object to format offline.
+
+| `style` | Format |
+|---|---|
+| `gbt7714-numeric` (default) | 作者. 题名[J]. 刊名, 年, 卷(期): 页. DOI. |
+| `apa` | Author, A. A., & Author, B. B. (Year). Title. *Journal, Volume*(Issue), pages. https://doi.org/… |
+| `ieee` | [n] A. A. Author, "Title," *Journal*, vol. V, no. I, pp. P, Year. |
+| `vancouver` | Author AB. Title. Journal. Year;Volume(Issue):Pages. |
+| `bibtex` | `@article{key, …}` with a deterministic key |
+| `ris` | `TY  - JOUR` … `ER  -` |
+| `csl-json` | CSL-JSON item for external processors |
+
+Returns `{ ok, style, entry, missing[], evidenceId?, warnings[] }`. `missing` lists fields absent from the record; an identifier still goes through the same provider lookup and REP evidence path as `cite_verify`.
 
 ### Error codes
 
