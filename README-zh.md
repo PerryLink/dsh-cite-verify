@@ -1,13 +1,22 @@
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-cite-verify-hero-zh-dark.webp">
+  <img src="docs/assets/dsh-cite-verify-hero-zh-light.webp" width="100%" alt="dsh-cite-verify 配图：一条引用在 Crossref 解析后逐字段核对——doi-exists 通过、引用年份 2021 与记录 2020 不符记 warn、记录带撤稿通知记 warn；右侧是不可变快照与 REP 证据编号，底部是由检查推导出的 status">
+</picture>
+
 # dsh-cite-verify
 
 **核验一条引用确实存在 —— 并核验它的元数据是否正确。**
 
 *DOI / PMID / arXiv / BibTeX → 数据源自己的回答、逐字段核对、内容寻址的快照，以及一条 REP 证据记录。`not_found` 只作为 skipped 报告，绝不当作造假。*
 
+[English](README.md) · [Español](README-es.md) · [Português](README-pt.md) · [हिन्दी](README-hi.md)
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24.9-brightgreen.svg)]()
 
-[English](README.md) · 简体中文
+</div>
 
 ---
 
@@ -18,6 +27,14 @@
 - 把数据源返回的原始响应存成不可变快照，并注册一条携带这些检查结果的 **REP v1 证据**。
 - `cite_fix` 以**文本**形式返回修正后的 BibTeX 条目 —— 它从不改动文件。
 - `cite_export` 把解析出的记录格式化为 **GB/T 7714（顺序编码制）、APA 7、IEEE、Vancouver、BibTeX、RIS 或 CSL-JSON** —— 缺字段只报告，不臆造。
+
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-cite-verify-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-cite-verify-flow-v5-light.svg" width="100%" alt="dsh-cite-verify 结构图：DOI/PMID/arXiv/BibTeX 经四家允许清单提供方解析，逐字段比对标题、作者、年份、期刊、页码与版本，落一份不可变快照和一条 REP 证据，再由检查推导出 status；not_found 记为 skipped，结论留给审阅人">
+</picture>
+
+*结构：解析 → 比对 → 记录；`checks[]` 与 `status` 是两条输出，网络失败记为 `unchecked` 而不是引用失败。图内只有工具名与检查名，五语共用同一张结构图。*
 
 ## 它不做什么
 
@@ -152,6 +169,11 @@ dsh plugin --profile <name> remove dsh-cite-verify
 - **缓存可能最多陈旧 `cacheTtlMs` 这么久**；在意时请使用 `fresh`。
 
 ## 评测
+
+![dsh-cite-verify 基准评测：100 条冻结引用用例的真实运行 —— 存在性 precision / recall 均 1.00，字段 F1 0.9774，3 条期刊缩写误报如实列出](docs/assets/dsh-cite-verify-demo.gif)
+
+*动图是基准适配器的真实 stdout（冻结 fixture、不联网；2026-11-21 复跑）。3 条误报都是期刊缩写，如实报告而不是隐藏。*
+
 
 ### 基准评测 —— `dsh-research-bench` citations v0.1.0（100 条用例）
 

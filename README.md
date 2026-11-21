@@ -1,13 +1,22 @@
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-cite-verify-hero-en-dark.webp">
+  <img src="docs/assets/dsh-cite-verify-hero-en-light.webp" width="100%" alt="dsh-cite-verify: a citation resolved against Crossref — doi-exists pass, year 2021 against the record's 2020 warn, a retraction notice warn — with the immutable snapshot and REP evidence id on the right and the derived status below">
+</picture>
+
 # dsh-cite-verify
 
 **Verify that a citation exists — and that its metadata is right.**
 
 *DOI / PMID / arXiv / BibTeX → the provider's own answer, field-by-field checks, a content-addressed snapshot, and a REP evidence record. `not_found` is reported as skipped, never as fabrication.*
 
+[简体中文](README-zh.md) · [Español](README-es.md) · [Português](README-pt.md) · [हिन्दी](README-hi.md)
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24.9-brightgreen.svg)]()
 
-English · [简体中文](README-zh.md)
+</div>
 
 ---
 
@@ -18,6 +27,14 @@ English · [简体中文](README-zh.md)
 - Stores the provider's exact response as an immutable snapshot and registers a **REP v1 evidence item** with those checks.
 - `cite_fix` returns a corrected BibTeX entry **as text** — it never edits files.
 - `cite_export` formats the resolved record as **GB/T 7714 (numeric), APA 7, IEEE, Vancouver, BibTeX, RIS or CSL-JSON** — missing fields are reported, never guessed.
+
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-cite-verify-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-cite-verify-flow-v5-light.svg" width="100%" alt="dsh-cite-verify structure: DOI/PMID/arXiv/BibTeX resolves through four allowlisted providers, compares title, authors, year, venue, pages and version field by field, stores an immutable snapshot and a REP evidence item, and derives status from checks; not_found is recorded as skipped and the verdict stays with the reviewer">
+</picture>
+
+*Structure: resolve → compare → record; `checks[]` and `status` are the two outputs, and a network failure is `unchecked` rather than a citation failure. The token labels inside the diagram are the real tool and check names, so the same picture serves all five languages.*
 
 ## What it does not do
 
@@ -152,6 +169,11 @@ Invalid values fail loud at mount.
 - **Cache can be stale** up to `cacheTtlMs`; use `fresh` when it matters.
 
 ## Evaluation
+
+![dsh-cite-verify benchmark: a real run over 100 frozen citation cases — existence precision and recall 1.00, field F1 0.9774, and three venue-abbreviation false positives reported](docs/assets/dsh-cite-verify-demo.gif)
+
+*Animated: the benchmark adapter's real stdout over the frozen fixtures (no network; re-run 2026-11-21). The three false positives are venue abbreviations and are reported, not hidden.*
+
 
 ### Benchmark — `dsh-research-bench` citations v0.1.0 (100 cases)
 
