@@ -205,7 +205,7 @@ Previsões brutas por caso: [`bench/results-citations.json`](bench/results-citat
 
 ### Testes unitários e de integração
 
-- **56 testes em 6 arquivos**: limites HTTP (lista de permissões, revalidação de redirecionamentos, retentativas, mapeamento de timeouts), BibTeX (entradas com chaves e com parênteses), comparação (incl. diacríticos/subtítulo e sobrenome+iniciais do PubMed), verificação (encontrado / não encontrado / timeout / PMID / arXiv / BibTeX / aviso de atualização / verificação cruzada de duas fontes / cache / fresh, e `notFound` vs `lookupError`, incl. um caso misto de 404 + timeout), runtime (validade do registro REP, persistência, reverificação sem conflito de evidência, localidade de lotes, duplicatas incl. status que preserva fail, diffs de correção), superfície de ferramentas (incl. a renderização de não encontrado vs consulta com falha) e contrato do pacote.
+- **70 testes em 8 arquivos**: limites HTTP (lista de permissões, revalidação de redirecionamentos, retentativas, mapeamento de timeouts), BibTeX (entradas com chaves e com parênteses), comparação (incl. diacríticos/subtítulo e sobrenome+iniciais do PubMed), verificação (encontrado / não encontrado / timeout / PMID / arXiv / BibTeX / aviso de atualização / verificação cruzada de duas fontes / cache / fresh, e `notFound` vs `lookupError`, incl. um caso misto de 404 + timeout), runtime (validade do registro REP, persistência, reverificação sem conflito de evidência, localidade de lotes, duplicatas incl. status que preserva fail, diffs de correção), superfície de ferramentas (incl. a renderização de não encontrado vs consulta com falha) e contrato do pacote.
 - Toda interação com provedores na suíte de testes é roteirizada — a CI nunca depende da rede.
 
 ## Desenvolvimento
