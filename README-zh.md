@@ -28,7 +28,6 @@
 - `cite_fix` 以**文本**形式返回修正后的 BibTeX 条目 —— 它从不改动文件。
 - `cite_export` 把解析出的记录格式化为 **GB/T 7714（顺序编码制）、APA 7、IEEE、Vancouver、BibTeX、RIS 或 CSL-JSON** —— 缺字段只报告，不臆造。
 
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-cite-verify-flow-v5-dark.svg">
   <img src="docs/assets/dsh-cite-verify-flow-v5-light.svg" width="100%" alt="dsh-cite-verify 结构图：DOI/PMID/arXiv/BibTeX 经四家允许清单提供方解析，逐字段比对标题、作者、年份、期刊、页码与版本，落一份不可变快照和一条 REP 证据，再由检查推导出 status；not_found 记为 skipped，结论留给审阅人">
@@ -49,7 +48,7 @@
 
 | | |
 |---|---|
-| DeepSeek Harness | **`dsh-v0.2.2-rc.4`**（2026-11-18 实测）；peer 区间 `>=0.2.1-0 <0.3.0 \|\| >=0.2.2-0 <0.3.0` |
+| DeepSeek Harness | **`dsh-v0.2.3-alpha.1`**（2026-11-22 实测）；peer 区间 `>=0.2.1-0 <0.3.0 \|\| >=0.2.2-0 <0.3.0` |
 | Node | `^22.19.0 \|\| >=24.9.0`（实测 `24.22.1`），仅 ESM |
 | Peer | `@perrylink/dsh-research-core ^0.1.0`、`@deepseek-ai/cordis ^4.0.5-alpha.1`、`@deepseek-ai/dsh-tools`、`@deepseek-ai/schemastery ^3.18.5-alpha.1` |
 | 运行时依赖 | **零** |
@@ -173,7 +172,6 @@ dsh plugin --profile <name> remove dsh-cite-verify
 ![dsh-cite-verify 基准评测：100 条冻结引用用例的真实运行 —— 存在性 precision / recall 均 1.00，字段 F1 0.9774，3 条期刊缩写误报如实列出](docs/assets/dsh-cite-verify-demo.gif)
 
 *动图是基准适配器的真实 stdout（冻结 fixture、不联网；2026-11-21 复跑）。3 条误报都是期刊缩写，如实报告而不是隐藏。*
-
 
 ### 基准评测 —— `dsh-research-bench` citations v0.1.0（100 条用例）
 

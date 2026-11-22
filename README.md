@@ -28,7 +28,6 @@
 - `cite_fix` returns a corrected BibTeX entry **as text** — it never edits files.
 - `cite_export` formats the resolved record as **GB/T 7714 (numeric), APA 7, IEEE, Vancouver, BibTeX, RIS or CSL-JSON** — missing fields are reported, never guessed.
 
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-cite-verify-flow-v5-dark.svg">
   <img src="docs/assets/dsh-cite-verify-flow-v5-light.svg" width="100%" alt="dsh-cite-verify structure: DOI/PMID/arXiv/BibTeX resolves through four allowlisted providers, compares title, authors, year, venue, pages and version field by field, stores an immutable snapshot and a REP evidence item, and derives status from checks; not_found is recorded as skipped and the verdict stays with the reviewer">
@@ -49,7 +48,7 @@
 
 | | |
 |---|---|
-| DeepSeek Harness | **`dsh-v0.2.2-rc.4`** (verified 2026-11-18); peer line `>=0.2.1-0 <0.3.0 \|\| >=0.2.2-0 <0.3.0` |
+| DeepSeek Harness | **`dsh-v0.2.3-alpha.1`** (verified 2026-11-22); peer line `>=0.2.1-0 <0.3.0 \|\| >=0.2.2-0 <0.3.0` |
 | Node | `^22.19.0 \|\| >=24.9.0` (tested on `24.22.1`), ESM only |
 | Peers | `@perrylink/dsh-research-core ^0.1.0`, `@deepseek-ai/cordis ^4.0.5-alpha.1`, `@deepseek-ai/dsh-tools`, `@deepseek-ai/schemastery ^3.18.5-alpha.1` |
 | Runtime dependencies | **zero** |
@@ -173,7 +172,6 @@ Invalid values fail loud at mount.
 ![dsh-cite-verify benchmark: a real run over 100 frozen citation cases — existence precision and recall 1.00, field F1 0.9774, and three venue-abbreviation false positives reported](docs/assets/dsh-cite-verify-demo.gif)
 
 *Animated: the benchmark adapter's real stdout over the frozen fixtures (no network; re-run 2026-11-21). The three false positives are venue abbreviations and are reported, not hidden.*
-
 
 ### Benchmark — `dsh-research-bench` citations v0.1.0 (100 cases)
 

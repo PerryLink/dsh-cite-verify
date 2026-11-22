@@ -28,7 +28,6 @@
 - `cite_fix` सुधरी हुई BibTeX एंट्री **टेक्स्ट के रूप में** लौटाता है — वह कभी फ़ाइलें संपादित नहीं करता।
 - `cite_export` हल किए गए रिकॉर्ड को **GB/T 7714 (संख्यात्मक), APA 7, IEEE, Vancouver, BibTeX, RIS या CSL-JSON** के रूप में फ़ॉर्मैट करता है — अनुपस्थित फ़ील्ड रिपोर्ट किए जाते हैं, कभी अनुमान नहीं लगाया जाता।
 
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-cite-verify-flow-v5-dark.svg">
   <img src="docs/assets/dsh-cite-verify-flow-v5-light.svg" width="100%" alt="dsh-cite-verify संरचना: DOI/PMID/arXiv/BibTeX चार अनुमति-सूचीबद्ध प्रदाताओं से हल होता है, शीर्षक, लेखक, वर्ष, पत्रिका/सम्मेलन, पृष्ठ और संस्करण की फ़ील्ड-दर-फ़ील्ड तुलना करता है, एक अपरिवर्तनीय स्नैपशॉट और एक REP एविडेंस आइटम संग्रहीत करता है, और जाँचों से status व्युत्पन्न करता है; not_found को skipped के रूप में दर्ज किया जाता है और अंतिम निर्णय समीक्षक के पास रहता है">
@@ -49,7 +48,7 @@
 
 | | |
 |---|---|
-| DeepSeek Harness | **`dsh-v0.2.2-rc.4`** (2026-11-18 को सत्यापित); peer लाइन `>=0.2.1-0 <0.3.0 \|\| >=0.2.2-0 <0.3.0` |
+| DeepSeek Harness | **`dsh-v0.2.3-alpha.1`** (2026-11-22 को सत्यापित); peer लाइन `>=0.2.1-0 <0.3.0 \|\| >=0.2.2-0 <0.3.0` |
 | Node | `^22.19.0 \|\| >=24.9.0` (`24.22.1` पर परीक्षित), केवल ESM |
 | Peers | `@perrylink/dsh-research-core ^0.1.0`, `@deepseek-ai/cordis ^4.0.5-alpha.1`, `@deepseek-ai/dsh-tools`, `@deepseek-ai/schemastery ^3.18.5-alpha.1` |
 | रनटाइम निर्भरताएँ | **शून्य** |
@@ -173,7 +172,6 @@ dsh plugin --profile <name> remove dsh-cite-verify
 ![dsh-cite-verify बेंचमार्क: 100 फ़्रोज़न साइटेशन केसों पर एक असली रन — अस्तित्व precision और recall 1.00, फ़ील्ड F1 0.9774, और तीन पत्रिका-संक्षेपण फ़ॉल्स पॉज़िटिव रिपोर्ट किए गए](docs/assets/dsh-cite-verify-demo.gif)
 
 *एनिमेटेड: फ़्रोज़न फ़िक्स्चर पर बेंचमार्क एडाप्टर का असली stdout (कोई नेटवर्क नहीं; 2026-11-21 को फिर से चलाया गया)। तीनों फ़ॉल्स पॉज़िटिव पत्रिका-नाम के संक्षेपण हैं और उन्हें रिपोर्ट किया जाता है, छिपाया नहीं जाता।*
-
 
 ### बेंचमार्क — `dsh-research-bench` citations v0.1.0 (100 केस)
 
